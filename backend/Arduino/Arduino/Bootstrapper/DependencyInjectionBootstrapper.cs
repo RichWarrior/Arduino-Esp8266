@@ -1,6 +1,7 @@
 ﻿using Core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Service;
+using Service.Repositories;
 
 namespace Bootstrapper
 {
@@ -10,6 +11,12 @@ namespace Bootstrapper
         {
             services.AddScoped<IDbContext, DbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IDeviceDetailRepository, DeviceDetailRepository>();
+            services.AddScoped<IDeviceRepository, DeviceRepository>();
+            services.AddScoped<IDeviceTypeRepository, DeviceTypeRepository>();
+            services.AddScoped<IPinRepository, PinRepository>();
+            services.AddScoped<ISensorRepository, SensorRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             return services;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Core.Interfaces;
 using Core.Utilities;
 using MySql.Data.MySqlClient;
+using Service.Repositories;
 using System;
 using System.Data;
 using System.Diagnostics;
@@ -12,8 +13,56 @@ namespace Service
         IDbTransaction transaction;
         IDbConnection connection;
 
+        IDeviceDetailRepository _deviceDetail;
+        IDeviceRepository _device;
+        IDeviceTypeRepository _deviceType;
+        IPinRepository _pin;
+        ISensorRepository _sensor;
+        IUserRepository _user;
+
         bool disposed;
 
+        public IDeviceDetailRepository DeviceDetail
+        {
+            get
+            {
+                return _deviceDetail ?? (_deviceDetail = new DeviceDetailRepository(transaction));
+            }
+        }
+
+        public IDeviceRepository Device
+        {
+            get
+            {
+                return _device ?? (_device = new DeviceRepository(transaction));
+            }
+        }
+
+        public IDeviceTypeRepository DeviceType
+        {
+            get
+            {
+                return _deviceType ?? (_deviceType = new DeviceTypeRepository(transaction));
+            }
+        }
+
+        public IPinRepository Pin
+        {
+            get
+            {
+                return _pin ?? (_pin = new PinRepository(transaction));
+            }
+        }
+
+        public ISensorRepository Sensor
+        {
+            get
+            {
+                return _sensor ?? (_sensor = new SensorRepository(transaction));
+            }
+        }
+
+        public IUserRepository User => throw new NotImplementedException();
 
         public UnitOfWork()
         {
