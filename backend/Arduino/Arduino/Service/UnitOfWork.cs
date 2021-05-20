@@ -62,7 +62,13 @@ namespace Service
             }
         }
 
-        public IUserRepository User => throw new NotImplementedException();
+        public IUserRepository User
+        {
+            get
+            {
+                return _user ?? (_user = new UserRepository(transaction));
+            }
+        }
 
         public UnitOfWork()
         {
@@ -133,7 +139,12 @@ namespace Service
 
         private void resetRepositories()
         {
-
+             _deviceDetail = null;
+             _device = null;
+             _deviceType = null;
+             _pin = null;
+             _sensor = null;
+             _user = null;
         }
 
         private void dispose(bool disposing)
