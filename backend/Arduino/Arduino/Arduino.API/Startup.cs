@@ -1,3 +1,4 @@
+using Arduino.API.Dto.Request.Auth;
 using Bootstrapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -31,7 +32,8 @@ namespace Arduino.API
             services.AddMapper(typeof(Startup));
             mvcBuilder.AddFluentValidatorBootstrapper(new List<Type>
             {
-
+                typeof(RegisterRequestValidator),
+                typeof(LogInRequestValidator)
             });
             services.AddDependencyInjection();
             services.AddLocalizationMessage();
