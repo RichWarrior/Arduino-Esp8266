@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 
 import auth from './auth'
 import dashboard from './dashboard'
+import device from './device'
 
 import { Guard } from './guard'
 
@@ -11,7 +12,8 @@ Vue.use(VueRouter)
 
 const routes = [
     auth,
-    dashboard
+    dashboard,
+    device
 ]
 
 const router = new VueRouter({

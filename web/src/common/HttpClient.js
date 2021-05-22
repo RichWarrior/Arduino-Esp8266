@@ -6,6 +6,7 @@ import jwtService from './JwtService'
 
 import store from '../store';
 import { IS_LOADING } from '../store/modules/base/actions.type'
+import { DESTROY_USER } from '../store/modules/auth/actions.type'
 
 const ApiService = {
     init() {
@@ -51,7 +52,7 @@ const ApiService = {
                     const statusCode = err.response.status;
                     if (statusCode === 401) {
                         if (err.response.data.statusCode === undefined) {
-                            //store.dispatch(DESTROY_USER)
+                            store.dispatch(DESTROY_USER)
                             router.push({ path: '/auth/login' })
                             err.response.data.message = '';
                         }
@@ -86,7 +87,7 @@ const ApiService = {
                     const statusCode = err.response.status;
                     if (statusCode === 401) {
                         if (err.response.data.statusCode === undefined) {
-                            //store.dispatch(DESTROY_USER)
+                            store.dispatch(DESTROY_USER)
                             router.push({ path: '/auth/login' })
                             err.response.data.message = '';
                         }
@@ -121,7 +122,7 @@ const ApiService = {
                     const statusCode = err.response.status;
                     if (statusCode === 401) {
                         if (err.response.data.statusCode === undefined) {
-                            //store.dispatch(DESTROY_USER)
+                            store.dispatch(DESTROY_USER)
                             router.push({ path: '/auth/login' })
                             err.response.data.message = '';
                         }
@@ -156,7 +157,7 @@ const ApiService = {
                     const statusCode = err.response.status;
                     if (statusCode === 401) {
                         if (err.response.data.statusCode === undefined) {
-                            //store.dispatch(DESTROY_USER)
+                            store.dispatch(DESTROY_USER)
                             router.push({ path: '/auth/login' })
                             err.response.data.message = '';
                         }

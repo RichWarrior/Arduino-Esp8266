@@ -1,4 +1,7 @@
 export const Setup = (vue) => {
     vue.component('arduino-toolbar', () =>
-        import ('./toolbar.vue'))
+        import ('./Toolbar.vue'))
+
+    vue.component('arduino-sidebar', () =>
+        import ('./Sidebar.vue'))
 }
