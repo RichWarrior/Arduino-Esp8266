@@ -24,6 +24,7 @@ namespace Core.Utilities
         {
             public static string NotInserted => "Could not created device";
             public static string NotDeleted => "Could not deleted device";
+            public static string NotUpdated => "Could not updated device";
         }
     }
 }

@@ -16,7 +16,12 @@ namespace Service.Repositories
 
         public IDataResult<Device> FindById(int id)
         {
-            string sql = "SELECT * FROM device WHERE Id = @id AND Status = 1";
+            string sql = @"SELECT 
+                d.*,
+                dt.Name AS DeviceTypeName               
+              FROM device d
+            INNER JOIN devicetype dt ON dt.Id = d.DeviceTypeId
+            WHERE d.Id = @Id AND d.Status = 1";
             var result = connection.ExecuteCommand<Device>(sql, id)?.FirstOrDefault();
             return new SuccessDataResult<Device>(result);
         }
@@ -24,13 +29,8 @@ namespace Service.Repositories
         public IDataResult<List<Device>> GetDevices(int userId)
         {
             string sql = @"SELECT 
-                d.Id,
-                d.Name,
-                dt.Name AS DeviceTypeName,
-                d.CreationDate,
-                d.ModifiedDate,
-                d.CreatorId,
-                d.Status  
+                d.*,
+                dt.Name AS DeviceTypeName
               FROM device d
             INNER JOIN devicetype dt ON dt.Id = d.DeviceTypeId
             WHERE d.UserId = @userId AND d.Status = 1";
@@ -51,6 +51,12 @@ namespace Service.Repositories
             var result = connection.Delete(device);
 
             return result ? new SuccessResult() : new ErrorResult(Messages.Device.NotDeleted);
+        }
+
+        public IResult Update(Device device)
+        {
+            var result = connection.Update(device);
+            return result ? new SuccessResult() : new ErrorResult(Messages.Device.NotUpdated);
         }
     }
 }

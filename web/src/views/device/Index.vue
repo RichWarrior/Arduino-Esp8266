@@ -61,11 +61,10 @@ export default {
   }),
   methods: {
     updateRecord(item) {
-      console.log(item);
+      this.$router.push({name:'updateDevice',params:{id:item.id}})
     },
     deleteRecord(item) {
       var index = this.devices.indexOf(item);
-      console.log(index);
       ShowConfirmDialog("Are u Sure, Delete Item ?").then(() => {
         this.$store
           .dispatch(DELETE_DEVICES, item)

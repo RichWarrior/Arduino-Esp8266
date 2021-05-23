@@ -1,0 +1,1 @@
+export const SET_AVAILABLE_PINS = 'setAvailablePins'

@@ -1,6 +1,5 @@
 const state = {
-    devices: [],
-    device: {}
+    availablePins: []
 }
 
 export default state;

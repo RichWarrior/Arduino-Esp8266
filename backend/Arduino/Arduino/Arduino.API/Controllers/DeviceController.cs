@@ -3,18 +3,16 @@ using Arduino.API.Dto.Response.Device;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Arduino.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    /// <summary>
+    /// 
+    /// </summary>
     public class DeviceController : BaseController
     {
         public DeviceController(
@@ -104,6 +102,89 @@ namespace Arduino.API.Controllers
                 return NotFound(response);
 
             response.IsDeleted = isDeleted.Success;
+
+            return Ok(response);
+        }
+
+        [HttpGet("get/{id:int}")]
+        public IActionResult Get(int id)
+        {
+            GetDeviceResponse response = new GetDeviceResponse();
+
+            Device device = GetDevice(id);
+
+            if (device == null)
+                return NotFound(device);
+
+            response.Device = mapper.Map<GetDeviceResponse.DeviceItem>(device);
+
+            return Ok(response);
+        }
+
+        [HttpPut("update/{id:int}")]
+        public IActionResult Update(int id, [FromBody] UpdateDeviceRequestDTO dto)
+        {
+            UpdateDeviceResponse response = new UpdateDeviceResponse();
+
+            Device device = GetDevice(id);
+
+            if (device == null)
+                return NotFound(response);
+
+            device.Name = dto.Name;
+
+            var isUpdated = uow.Device.Update(device);
+
+            if (!isUpdated.Success)
+                return NotFound(response, isUpdated.Message);
+
+            if (!uow.Commit())
+                return NotFound(response);
+
+            response.IsUpdated = isUpdated.Success;
+
+            return Ok(response);
+        }
+
+        [HttpGet("getsensors")]
+        public IActionResult GetSensors()
+        {
+            GetSensorResponse response = new GetSensorResponse();
+
+            var sensors = uow.Sensor.GetSensors();
+
+            if (!sensors.Success)
+                return NotFound(response);
+
+            response.Sensors = sensors.Data.Select(f => new GetSensorResponse.Sensor
+            {
+                Id = f.Id,
+                Name = f.Name
+            }).ToList();
+
+            return Ok(response);
+        }
+
+        [HttpGet("availablepins/{id:int}")]
+        public IActionResult GetAvailablePins(int id)
+        {
+            GetAvailablePinsResponse response = new GetAvailablePinsResponse();
+
+            Device device = GetDevice(id);
+
+            if (device == null)
+                return NotFound(response);
+
+            var pins = uow.Pin.GetAvailablePins(id, device.DeviceTypeId);
+
+            if (!pins.Success)
+                return NotFound(response);
+
+            response.Pins = pins.Data.Select(f => new GetAvailablePinsResponse.PinItem
+            {
+                Id = f.Id,
+                PinName = f.PinName
+            }).ToList();
 
             return Ok(response);
         }

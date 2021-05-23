@@ -10,5 +10,6 @@ namespace Core.Interfaces
         IResult Insert(Device device);
         IDataResult<Device> FindById(int id);
         IResult Delete(Device device);
+        IResult Update(Device device);
     }
 }

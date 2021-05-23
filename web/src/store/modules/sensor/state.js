@@ -1,6 +1,5 @@
 const state = {
-    devices: [],
-    device: {}
+    sensors: []
 }
 
 export default state;

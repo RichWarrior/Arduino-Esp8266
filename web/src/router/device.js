@@ -13,6 +13,12 @@ export default {
             name: 'newDevice',
             component: () =>
                 import ('../views/device/New.vue')
+        },
+        {
+            path: 'update/:id',
+            name: 'updateDevice',
+            component: () =>
+                import ('../views/device/Update.vue')
         }
     ]
 }

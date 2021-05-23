@@ -1,6 +1,11 @@
-﻿namespace Core.Interfaces
+﻿using Core.Entities;
+using Core.Utilities.Result;
+using System.Collections.Generic;
+
+namespace Core.Interfaces
 {
     public interface ISensorRepository
     {
+        IDataResult<List<Sensor>> GetSensors();
     }
 }

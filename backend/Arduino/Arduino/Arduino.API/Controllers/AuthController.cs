@@ -1,5 +1,6 @@
 ﻿using Arduino.API.Dto.Request.Auth;
 using Arduino.API.Dto.Response.Auth;
+using Arduino.API.Filters;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -36,7 +37,7 @@ namespace Arduino.API.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost("register")]
-        [AllowAnonymous]
+        [ArduinoAllowAnonymous]
         public IActionResult Register([FromBody] RegisterRequestDTO dto)
         {
             RegisterResponse response = new RegisterResponse();
@@ -62,7 +63,7 @@ namespace Arduino.API.Controllers
         }
 
         [HttpPost("login")]
-        [AllowAnonymous]
+        [ArduinoAllowAnonymous]
         public IActionResult LogIn([FromBody]LogInRequestDTO dto)
         {
             LogInResponse response = new LogInResponse();

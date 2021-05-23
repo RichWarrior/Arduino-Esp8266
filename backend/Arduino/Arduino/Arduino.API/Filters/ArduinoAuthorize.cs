@@ -3,15 +3,12 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Utilities;
 using Core.Utilities.Result;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Service;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace Arduino.API.Filters
 {
@@ -23,7 +20,7 @@ namespace Arduino.API.Filters
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            if(!context.Filters.Any(x=>x.GetType() == typeof(AllowAnonymousAttribute)))
+            if(!context.Filters.Any(x=>x.GetType() == typeof(ArduinoAllowAnonymous)))
             {
                 using (IUnitOfWork uow = new UnitOfWork())
                 {
