@@ -9,5 +9,8 @@ namespace Core.Entities
         public int DeviceTypeId { get; set; }
         public string DeviceKey { get; set; }
         public string Name { get; set; }
+
+        [Write(false)]
+        public string DeviceTypeName { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using Arduino.API.Dto.Request.Auth;
+using Arduino.API.Dto.Request.Device;
 using Bootstrapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -33,7 +34,8 @@ namespace Arduino.API
             mvcBuilder.AddFluentValidatorBootstrapper(new List<Type>
             {
                 typeof(RegisterRequestValidator),
-                typeof(LogInRequestValidator)
+                typeof(LogInRequestValidator),
+                typeof(InsertDeviceRequestValidator)
             });
             services.AddDependencyInjection();
             services.AddLocalizationMessage();

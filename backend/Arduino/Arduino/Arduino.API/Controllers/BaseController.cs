@@ -1,5 +1,7 @@
-﻿using Arduino.API.Models;
+﻿using Arduino.API.Filters;
+using Arduino.API.Models;
 using AutoMapper;
+using Core.Entities;
 using Core.Interfaces;
 using Core.Utilities;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +13,7 @@ namespace Arduino.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ArduinoAuthorize]
     public class BaseController : ControllerBase
     {
         /// <summary>
@@ -44,6 +47,18 @@ namespace Arduino.API.Controllers
             baseLocalizer = _baseLocalizer;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public string CurrentUserToken => JWTManager.GetToken(HttpContext);
+        /// <summary>
+        /// 
+        /// </summary>
+        public int CurrentUserId => JWTManager.GetUserId(HttpContext, uow);
+        /// <summary>
+        /// 
+        /// </summary>
+        public User CurrentUser => JWTManager.GetUser(CurrentUserId, uow);
 
         /// <summary>
         /// 

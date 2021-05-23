@@ -51,5 +51,31 @@ namespace Service.Repositories
             }
             return new SuccessResult(token);
         }
+
+        public IDataResult<User> CheckToken(string token)
+        {
+            token += "_user";
+            var db = cache.GetDatabase(0);
+            if (!db.KeyExists(token))
+                return new ErrorDataResult<User>(null, Messages.UnAuthorized);
+            var userJson = db.StringGet(token);
+            try
+            {
+                return new SuccessDataResult<User>(JsonConvert.DeserializeObject<User>(userJson));
+            }
+            catch (Exception)
+            {
+                return new ErrorDataResult<User>(null, Messages.UnAuthorized);
+            }
+        }
+
+        public IDataResult<User> FindById(int id)
+        {
+            string sql = "SELECT * FROM user WHERE Id = @id AND Status = 1";
+            var user = connection.ExecuteCommand<User>(sql, id)?.FirstOrDefault();
+            if (user == null)
+                return new ErrorDataResult<User>(null, Messages.User.NotFound);
+            return new SuccessDataResult<User>(user);
+        }
     }
 }
