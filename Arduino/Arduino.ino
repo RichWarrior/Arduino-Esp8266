@@ -2,7 +2,7 @@
 #include <HTTPClient.h>
  
 const char* ssid = "FarukIOT";
-const char* password =  "03102593";
+const char* password =  "*";
  
 void setup() {
  
