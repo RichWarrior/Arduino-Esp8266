@@ -36,7 +36,8 @@ namespace Arduino.API
                 typeof(RegisterRequestValidator),
                 typeof(LogInRequestValidator),
                 typeof(InsertDeviceRequestValidator),
-                typeof(UpdateDeviceRequestValidator)
+                typeof(UpdateDeviceRequestValidator),
+                typeof(InsertDeviceDetailValidator)
             });
             services.AddDependencyInjection();
             services.AddLocalizationMessage();

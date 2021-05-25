@@ -188,5 +188,11 @@ namespace Arduino.API.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("insertdevicedetail")]
+        public IActionResult InsertDeviceDetail([FromBody]InsertDeviceDetailRequestDTO dto)
+        {
+            return Ok(new { });
+        }
     }
 }
