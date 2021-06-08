@@ -7,5 +7,6 @@ namespace Core.Interfaces
     public interface ISensorRepository
     {
         IDataResult<List<Sensor>> GetSensors();
+        IDataResult<Sensor> GetSensor(int id);
     }
 }

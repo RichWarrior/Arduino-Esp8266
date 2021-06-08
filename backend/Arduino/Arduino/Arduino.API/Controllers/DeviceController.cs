@@ -33,6 +33,9 @@ namespace Arduino.API.Controllers
             if (device.Success)
                 dev = device.Data;
 
+            if (dev.UserId != currentUser.Id)
+                dev = null;
+
             return dev;
         }
 
@@ -190,9 +193,70 @@ namespace Arduino.API.Controllers
         }
 
         [HttpPost("insertdevicedetail")]
-        public IActionResult InsertDeviceDetail([FromBody]InsertDeviceDetailRequestDTO dto)
+        public IActionResult InsertDeviceDetail([FromBody] InsertDeviceDetailRequestDTO dto)
         {
-            return Ok(new { });
+            InsertDeviceDetailResponse response = new InsertDeviceDetailResponse();
+            Device device = GetDevice(dto.DeviceId);
+
+            if (device == null)
+                return NotFound(response);
+
+            var pins = uow.Pin.GetAvailablePins(dto.DeviceId, device.DeviceTypeId);
+
+            if (!pins.Success)
+                return NotFound(response);
+
+            if (!pins.Data.Any(f => f.Id == dto.PinId))
+                return NotFound(response);
+
+            var sensor = uow.Sensor.GetSensor(dto.SensorId);
+
+            if (!sensor.Success)
+                return NotFound(response, sensor.Message);
+
+            var deviceDetail = new DeviceDetail()
+            {
+                DeviceId = device.Id,
+                SensorId = sensor.Data.Id,
+                PinId = dto.PinId,
+                Description = dto.Desciption
+            };
+            var result = uow.DeviceDetail.Insert(deviceDetail);
+
+            if (!result.Success)
+                return NotFound(response, result.Message);
+
+            if (!uow.Commit())
+                return NotFound(response);
+
+            response.Id = deviceDetail.Id;
+
+            return Ok(response);
+        }
+
+        [HttpGet("getdevicesensors/{id:int}")]
+        public IActionResult GetDeviceSensors(int id)
+        {
+            GetDeviceSensorsResponse response = new GetDeviceSensorsResponse();
+
+            Device device = GetDevice(id);
+
+            if (device == null)
+                return NotFound(response);
+
+            var deviceDetails = uow.DeviceDetail.GetDeviceDetails(device.Id);
+
+            if (!deviceDetails.Success)
+                return NotFound(response, deviceDetails.Message);
+
+            response.DeviceSensors = deviceDetails.Data.Select(f => new GetDeviceSensorsResponse.DeviceSensor
+            {
+                Id = f.Id,
+                Pin = f.Pin,
+                SensorName = f.SensorName
+            }).ToList();
+
+            return Ok(response);
         }
     }
 }

@@ -26,5 +26,15 @@ namespace Core.Utilities
             public static string NotDeleted => "Could not deleted device";
             public static string NotUpdated => "Could not updated device";
         }
+
+        public static class DeviceDetail
+        {
+            public static string NotInserted => "Could not created device detail";
+        }
+
+        public static class Sensor
+        {
+            public static string NotFound => "Sensor Not Found";
+        }
     }
 }

@@ -1,8 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Arduino.API.Dto.Request.Device
 {
@@ -23,6 +19,10 @@ namespace Arduino.API.Dto.Request.Device
         /// 
         /// </summary>
         public int PinId { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string Desciption { get; set; }
     }
 
     /// <summary>

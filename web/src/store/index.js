@@ -7,6 +7,7 @@ import devicetype from './modules/devicetype'
 import device from './modules/device'
 import sensor from './modules/sensor'
 import pin from './modules/pin'
+import devicedetail from './modules/devicedetail'
 
 Vue.use(Vuex)
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
         devicetype,
         device,
         sensor,
-        pin
+        pin,
+        devicedetail
     }
 })
