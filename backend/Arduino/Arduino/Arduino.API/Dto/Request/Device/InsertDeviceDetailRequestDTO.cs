@@ -22,7 +22,7 @@ namespace Arduino.API.Dto.Request.Device
         /// <summary>
         /// 
         /// </summary>
-        public string Desciption { get; set; }
+        public string Description { get; set; }
     }
 
     /// <summary>

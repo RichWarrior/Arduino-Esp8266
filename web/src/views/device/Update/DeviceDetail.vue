@@ -84,8 +84,13 @@ import { GET_AVAILABLE_PINS } from "../../../store/modules/pin/actions.type";
 import {
   INSERT_DEVICE_DETAIL,
   GET_DEVICE_DETAILS,
+  DELETE_DEVICE_DETAILS,
 } from "../../../store/modules/devicedetail/actions.type";
-import { ShowErrorMessage, ShowSuccessMessage } from "../../../common/Alerts";
+import {
+  ShowErrorMessage,
+  ShowSuccessMessage,
+  ShowConfirmDialog,
+} from "../../../common/Alerts";
 import availablePinsDTO from "../../../dto/request/device/AvailablePins";
 import deviceDetailDTO from "../../../dto/request/device/NewDeviceDetail";
 export default {
@@ -108,13 +113,18 @@ export default {
     headers: [
       {
         value: "sensorName",
-        align: "center",
+        align: "left",
         text: "Sensor Name",
       },
       {
         value: "pin",
-        align: "center",
+        align: "left",
         text: "Pin",
+      },
+       {
+        value: "description",
+        align: "left",
+        text: "Description",
       },
       {
         value: "actions",
@@ -148,6 +158,7 @@ export default {
     },
     saveDeviceDetail() {
       this.deviceDetail.DeviceId = parseInt(this.$route.params.id);
+      console.log(this.deviceDetail)
       this.$store
         .dispatch(INSERT_DEVICE_DETAIL, this.deviceDetail)
         .then((payload) => {
@@ -175,10 +186,24 @@ export default {
         });
     },
     show(deviceDetail) {
-      console.log(deviceDetail);
+      this.$router.push({name:'viewSensor',params:{
+        id:deviceDetail.id
+      }})
     },
     deleteDetail(deviceDetail) {
-      console.log(deviceDetail);
+      ShowConfirmDialog("Are u Sure Delete?").then(() => {
+        var indexOf = this.deviceDetails.indexOf(deviceDetail);
+        this.$store
+          .dispatch(DELETE_DEVICE_DETAILS, deviceDetail.id)
+          .then((payload) => {
+            ShowSuccessMessage(payload.message);
+            this.deviceDetails.splice(indexOf, 1);
+            this.getAvailablePins();
+          })
+          .catch((err) => {
+            ShowErrorMessage(err.message);
+          });
+      });
     },
   },
   created() {

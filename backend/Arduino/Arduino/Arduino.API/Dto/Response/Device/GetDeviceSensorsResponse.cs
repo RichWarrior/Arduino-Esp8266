@@ -25,6 +25,10 @@ namespace Arduino.API.Dto.Response.Device
             /// 
             /// </summary>
             public string SensorName { get; set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public string Description { get; set; }
         }
     }
 }

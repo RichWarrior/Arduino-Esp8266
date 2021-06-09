@@ -1,7 +1,9 @@
 using Arduino.API.Dto.Request.Auth;
 using Arduino.API.Dto.Request.Device;
+using Arduino.API.Hubs;
 using Bootstrapper;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +49,13 @@ namespace Arduino.API
             {
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
+
+            services.AddSignalR(options=>
+            {
+
+                options.EnableDetailedErrors = true;
+                options.KeepAliveInterval = TimeSpan.FromDays(1);
+            });
         }
 
         /// <summary>
@@ -68,6 +77,12 @@ namespace Arduino.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+                endpoints.MapHub<SensorHub>("/sensorhub", options =>
+                 {
+                     options.Transports = HttpTransportType.WebSockets | HttpTransportType.LongPolling;
+ 
+                 });
             });
         }
     }

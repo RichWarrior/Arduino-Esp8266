@@ -19,6 +19,12 @@ export default {
             name: 'updateDevice',
             component: () =>
                 import ('../views/device/Update.vue')
+        },
+        {
+            path: 'view/:id',
+            name: 'viewSensor',
+            component: () =>
+                import ('../views/device/View.vue')
         }
     ]
 }

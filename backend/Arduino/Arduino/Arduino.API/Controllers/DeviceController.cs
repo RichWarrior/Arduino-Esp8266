@@ -219,7 +219,7 @@ namespace Arduino.API.Controllers
                 DeviceId = device.Id,
                 SensorId = sensor.Data.Id,
                 PinId = dto.PinId,
-                Description = dto.Desciption
+                Description = dto.Description
             };
             var result = uow.DeviceDetail.Insert(deviceDetail);
 
@@ -253,8 +253,37 @@ namespace Arduino.API.Controllers
             {
                 Id = f.Id,
                 Pin = f.Pin,
-                SensorName = f.SensorName
+                SensorName = f.SensorName,
+                Description = f.Description
             }).ToList();
+
+            return Ok(response);
+        }
+
+        [HttpDelete("deletedevicesensor/{id:int}")]
+        public IActionResult DeleteDeviceSensor(int id)
+        {
+            DeleteDeviceSensorResponse response = new DeleteDeviceSensorResponse();
+
+            var isExists = uow.DeviceDetail.GetDeviceDetail(id);
+
+            if (!isExists.Success)
+                return NotFound(response, isExists.Message);
+
+            var device = GetDevice(isExists.Data.DeviceId);
+
+            if (device == null)
+                return NotFound(response);
+
+            var isDeleted = uow.DeviceDetail.DeleteDeviceDetail(isExists.Data);
+
+            if (!isDeleted.Success)
+                return NotFound(response, isDeleted.Message);
+
+            if (!uow.Commit())
+                return NotFound(response);
+
+            response.IsDeleted = isDeleted.Success;
 
             return Ok(response);
         }
