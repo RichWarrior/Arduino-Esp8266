@@ -1,5 +1,6 @@
 ﻿using Arduino.API.Dto.Request.Device;
 using Arduino.API.Dto.Response.Device;
+using Arduino.API.Hubs;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -15,12 +16,15 @@ namespace Arduino.API.Controllers
     /// </summary>
     public class DeviceController : BaseController
     {
+        ISensorHubDispatcher dispatcher;
         public DeviceController(
             IUnitOfWork _uow,
             IMapper _mapper,
-            IStringLocalizer<BaseResource> _baseLocalizer)
+            IStringLocalizer<BaseResource> _baseLocalizer,
+            ISensorHubDispatcher _dispatcher)
             : base(_uow, _mapper, _baseLocalizer)
         {
+            dispatcher = _dispatcher;
         }
 
         [NonAction]

@@ -21,7 +21,7 @@ namespace Service.Repositories
                 dt.Name AS DeviceTypeName               
               FROM device d
             INNER JOIN devicetype dt ON dt.Id = d.DeviceTypeId
-            WHERE d.Id = @Id AND d.Status = 1";
+            WHERE d.Id = @id AND d.Status = 1";
             var result = connection.ExecuteCommand<Device>(sql, id)?.FirstOrDefault();
             return new SuccessDataResult<Device>(result);
         }

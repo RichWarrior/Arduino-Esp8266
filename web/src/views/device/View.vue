@@ -22,6 +22,7 @@
 <script>
 import bar from "../../components/chart/bar.vue";
 import { HubConnectionBuilder, HttpTransportType } from "@aspnet/signalr";
+import jwtService from "../../common/JwtService";
 let connection = null;
 export default {
   components: {
@@ -33,11 +34,16 @@ export default {
   }),
   methods: {
     connect() {
+      var token = jwtService.getToken().token;
+      var deviceDetailId = parseInt(this.$route.params.id);
       connection = new HubConnectionBuilder()
-        .withUrl("http://localhost:42192/sensorhub", {
-          skipNegotiation: true,
-          transport: HttpTransportType.WebSockets,
-        })
+        .withUrl(
+          `http://localhost:42192/sensorhub?token=${token}&sensorId=${deviceDetailId}`,
+          {
+            skipNegotiation: true,
+            transport: HttpTransportType.WebSockets,
+          }
+        )
         .build();
 
       connection
@@ -45,7 +51,7 @@ export default {
         .then(() => {})
         .catch((err) => {
           console.log(err);
-        })
+        });
     },
   },
   created() {

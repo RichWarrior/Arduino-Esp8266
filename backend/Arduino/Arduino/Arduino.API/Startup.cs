@@ -56,6 +56,8 @@ namespace Arduino.API
                 options.EnableDetailedErrors = true;
                 options.KeepAliveInterval = TimeSpan.FromDays(1);
             });
+
+            services.AddSingleton<ISensorHubDispatcher, SensorHubDispatcher>();
         }
 
         /// <summary>
