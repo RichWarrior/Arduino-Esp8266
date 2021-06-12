@@ -1,5 +1,6 @@
 ﻿using Arduino.API.Dto.Request.Device;
 using Arduino.API.Dto.Response.Device;
+using Arduino.API.Filters;
 using Arduino.API.Hubs;
 using AutoMapper;
 using Core.Entities;
@@ -290,6 +291,39 @@ namespace Arduino.API.Controllers
             response.IsDeleted = isDeleted.Success;
 
             return Ok(response);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("senddevicedata")]
+        [ArduinoAllowAnonymous]
+        public IActionResult SendDeviceData([FromQuery]string uniqueKey, int deviceDetailId,  decimal data)
+        {
+            var deviceExists = uow.Device.FindByUniqueKey(uniqueKey);
+            if (deviceExists.Success)
+            {
+                var device = deviceExists.Data;
+                if (device != null)
+                {
+                    var deviceDetailExists = uow.DeviceDetail.GetDeviceDetail(deviceDetailId);
+                    if (deviceDetailExists.Success)
+                    {
+                        var deviceDetail = deviceDetailExists.Data;
+                        if (deviceDetail != null)
+                        {
+                            dispatcher.SendData(new SensorhubModel
+                            {
+                                DeviceDetailId = deviceDetail.Id.ToString(),
+                                UniqueKey = uniqueKey,
+                                Value = data
+                            });
+                        }                      
+                    }
+                }               
+            }
+            return Ok(new { });
         }
     }
 }

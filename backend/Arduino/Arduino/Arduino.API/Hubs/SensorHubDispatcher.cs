@@ -12,7 +12,7 @@ namespace Arduino.API.Hubs
     {
         public string UniqueKey { get; set; }
         public string DeviceDetailId { get; set; }
-        public string Value { get; set; }
+        public decimal Value { get; set; }
     }
 
     public class SensorHubDispatcher : ISensorHubDispatcher
@@ -26,7 +26,7 @@ namespace Arduino.API.Hubs
 
         public async Task SendData(SensorhubModel model)
         {
-            
+            hubContext.Clients.Group(model.DeviceDetailId).SendAsync("getData", model);
         }
     }
 }

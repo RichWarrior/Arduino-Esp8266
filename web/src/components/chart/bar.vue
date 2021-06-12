@@ -8,7 +8,6 @@ export default {
   },
   methods: {
     ardRender() {
-        console.log('chart render')
       this.renderChart(
         {
           labels: this.labels,

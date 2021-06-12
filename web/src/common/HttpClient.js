@@ -11,7 +11,7 @@ import { DESTROY_USER } from '../store/modules/auth/actions.type'
 const ApiService = {
     init() {
         Vue.use(VueAxios, axios);
-        Vue.axios.defaults.baseURL = "http://localhost:42192/api"
+        Vue.axios.defaults.baseURL = "http://192.168.2.216/api"
     },
 
     setHeader() {

@@ -38,7 +38,7 @@ export default {
       var deviceDetailId = parseInt(this.$route.params.id);
       connection = new HubConnectionBuilder()
         .withUrl(
-          `http://localhost:42192/sensorhub?token=${token}&sensorId=${deviceDetailId}`,
+          `http://192.168.2.216/sensorhub?token=${token}&sensorId=${deviceDetailId}`,
           {
             skipNegotiation: true,
             transport: HttpTransportType.WebSockets,
@@ -48,7 +48,18 @@ export default {
 
       connection
         .start()
-        .then(() => {})
+        .then(() => {
+          connection.on("getData",(data)=>{
+            var date = this.$moment(new Date()).format('DD/MM/YYYY hh:mm:ss');
+            if(this.labels.length == 25){
+              this.labels = [];
+              this.datasets[0].data = []
+            }
+            this.labels.push(date); 
+            this.datasets[0].data.push(data.value);  
+            this.$refs.chart.ardRender();         
+          })
+        })
         .catch((err) => {
           console.log(err);
         });
@@ -56,24 +67,21 @@ export default {
   },
   created() {
     this.labels = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
     ];
 
     this.datasets = [
       {
-        label: "Visitors",
+        label: "Sensor Data",
         backgroundColor: "#1797BE",
-        data: [40, 39, 10, 40, 39, 80, 40],
+        data: [],
       },
     ];
 
     this.connect();
+
+    setTimeout(()=>{
+      window.location.reload();
+    },600000)
   },
 };
 </script>

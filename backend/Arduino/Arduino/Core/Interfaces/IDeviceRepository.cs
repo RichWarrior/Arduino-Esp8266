@@ -11,5 +11,6 @@ namespace Core.Interfaces
         IDataResult<Device> FindById(int id);
         IResult Delete(Device device);
         IResult Update(Device device);
+        IDataResult<Device> FindByUniqueKey(string uniqueKey);
     }
 }

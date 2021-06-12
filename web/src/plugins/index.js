@@ -8,4 +8,5 @@ export const Setup = vue => {
     httpClient.setLocalization();
 
     vue.use(VueSweetalert2)
+    vue.use(require('vue-moment'))
 }

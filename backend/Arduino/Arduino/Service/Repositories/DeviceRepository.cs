@@ -58,5 +58,17 @@ namespace Service.Repositories
             var result = connection.Update(device);
             return result ? new SuccessResult() : new ErrorResult(Messages.Device.NotUpdated);
         }
+
+        public IDataResult<Device> FindByUniqueKey(string uniqueKey)
+        {
+            string sql = @"SELECT 
+                d.*,
+                dt.Name AS DeviceTypeName               
+              FROM device d
+            INNER JOIN devicetype dt ON dt.Id = d.DeviceTypeId
+            WHERE d.DeviceKey = @uniqueKey AND d.Status = 1";
+            var result = connection.ExecuteCommand<Device>(sql, uniqueKey)?.FirstOrDefault();
+            return new SuccessDataResult<Device>(result);
+        }
     }
 }
